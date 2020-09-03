@@ -1,0 +1,208 @@
+name: Azure Pipelines
+variables:
+  python.version: '3.7.6'
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      name: Hosted Ubuntu 1804
+    steps:
+      # Needed for Terraform VM deployment
+    - task: InstallSSHKey@0
+      displayName: 'Install an SSH key'
+      inputs:
+        #knownHostsEntry: '$(Parameters.hostName)'
+        #knownHostsEntry: '52.142.13.97 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjoeDqB/s4EOknWMS5nHXKBMCruCrKIM4rDyp1MDZnehFZcKmPwIkW4Y+JGQdcVm54s9xrXnm/P6GPjacAJghPghb+KRlV/gmkJVRo3RhXMflANffUs+KvmTNmgq3Sd9BMMYaZ8y1obfLW0BCSvljRl5rBHRpUFuZxC0sV6WpZPoYbF3IIyRnwRCLy7w6QelslwfJR1+hE27QUgKsoQp2fO+o2BmjCsa75lRvV538yXBZ26jnUXjTeTepOL7kBdQx+iMoQeCbsFpDTmsAK0FGndZfvWpq2sXnZ1b2l/3xJbOrLTHOBgf79SXx+Za/KJ2CYk02DxRWVik6FrNmVO0Et'
+        #sshPublicKey:'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWmgS584kqm1dezqaGOe67Qsm3qaiSvhYEecoBMwDv05pdEXSaKTtZn23znVyh6puwMvs1DN/NYDIToOaKq9ZGpPMPLa/Ss1gAgq0bcfl5kUdrLVDA3Ie4qf5DqxUS7IJ3Yaj8TL/iyrIfG+Rc3Qx7DPCewYH3V6VaugBAV4ZwFqtNKSkt6zGjrif7dwPzvwYnCQzD8H3s4N2al/CV8eTZ9MfkLUHV26EvJCIq5/kk6iYkb5O/03TFb2ISxzaA6BzdPmk/IQIpnRlq4KST7K39pL46HSqHu1PJXgSDSXZ8pUGHDJ9Rxn2HJq6sitI8cLPVU9XuWXsVOaq8wumn3OtK+4GULdbuwH6vMUY+Q9sd9hCGsSK3KGUY4vcKGnHeizaFjkzMTlKBtUvaWsl0muSyoDT6FiPRRK9INSf1FhrSsdR5aLF1hDzYC9GuPwptOADHLV/lhwi68U7JTnriF3vleztAogluJu+jbzGdsJuciJJd077KlFJB7avCGiRSw9QNMgkKeqiVVIfsgl6eBWn14iIqIpJZ6eA90pnemiur76M4qpnwzVt+fxQ+hsjXr27tRihXgs7xhga0isqi45VyhzPzNcGg8C68bcH2XTnT9gHYLp86lkb9OSTdnGTMZs5c1qs4Iti6gJA7Bp5Psupl5uYHKuXXWQJo7IW5kYvS+Q== ivan-clare_ngong@cc-fd5f12e2-c8cf4f85-mxdnk'
+        knownHostsEntry: '|1|0dG/IpFEemrOUlfU0mv4N2LqEdU=|8fYEn8cCjvgdGArply0mueZ6GhY= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHE915hlXIPPlzpuoU7bpERJuDgkMDVm8gF9kfo4PoLtJCSrBrh4MkKwQ55trN+8uolJ8fC6ohtrFiOTu8wDOJ4='
+        sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1ZlZXeeJiJL/Q0WEVQtfAy+v0V7NTlgScZR2eGJtLRvea7fKpdCx8zaUP4EP57quWxNrndfouhFLhZgFNihT0ByZalwGwyLMXhk5hGSuporLR20tN2cdzc1Ku7uv+1P1D6ptIijgQ7fJpKBtkgUHFun7dmg25Z4THEuLWHheAyaES8ggi+b+WniVtKShyxcQKpg1pVmO2RXo+WgCvE3IzFzF5CPCLefIZwxjfP31xAk3rWI62KGL1kSu8BQgO5md3MiM7qfVD63nsqv3d5R3S1ex85xY91bU4M/XptgGLCi2teOBke4L0Vk2NKPjGHtaSg09I9fDgu3jgxSAwh8fEq0mFu7Ft0Ia6MD4HS0rO3YBwpcTcgl2d+pU+3pWPOrEMkn70bFWKElcHrVFWt0xPdOdC/PB431McXJz+HdWHAGhAefe+TURdAjK8sl0AHQU6V3smOp6h2xvqw7UQjiqhs68yX4HNa3WMCCl616FpP41ngbmiUayetdgTODH/eUcoVVqbNQTihglxaHmXguk8NcK6XmfKH0vYw7UGv6SxeCAajQQdL3F2scN7gd8yWjfXO1XTw6ZzR5SHtEc6TOxf8p5vi2HVVh2R3u/QilfqPZhvAcM9Z4Hg+ptZRRLl2UcqXaYS1fSxvEvxS5iDtLTTvqXOIKgd0dv77V8STxICCQ== ivan-clare_ngong@cc-f364f694-7fcd46ddc9-9hdnd'
+        sshKeySecureFile: 'id_rsa'
+    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+      displayName: 'Use Terraform latest'
+      inputs:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+    - task: TerraformTaskV1@0
+      displayName: 'terraform init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        backendServiceArm: 'quality_conn'
+        backendAzureRmResourceGroupName: 'QualityReleases'
+        backendAzureRmStorageAccountName: 'quality2525'
+        backendAzureRmKey: 'terraform.tfstate'
+        backendAzureRmContainerName: 'quality_cont'
+    - task: TerraformCLI@0
+      displayName: 'terraform validate'
+      inputs:
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+    - task: TerraformCLI@0
+      displayName: 'terraform apply'
+      inputs:
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+    - task: ArchiveFiles@2
+      displayName: 'Archive Autmated Tests'
+      inputs:
+        rootFolderOrFile: 'automatedtesting'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-automatedtests.zip'
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: 'automatedtesting/jmeter/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload Package'
+      artifact: drop-fakerestapi
+    
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-automatedtests.zip
+      displayName: 'Upload Automatedtests'
+      artifact: drop-automatedtests
+
+    # Running Postman
+    - task: CmdLine@2
+      displayName: 'Running Postman Test'
+      inputs:
+        script: |
+          npm install -g newman
+          newman run StarterAPIs.json -e StarterAPIEnvironment.postman_environment.json  --reporters cli,junit --reporter-junit-export junitReport.xml
+          #newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export junitReport.xml
+        workingDirectory: $(System.DefaultWorkingDirectory)/automatedtesting/postman
+    - task: Bash@3
+      displayName: 'Searching for Report'
+      inputs:
+        targetType: 'inline'
+        script: |
+          #! /bin/bash
+          pwd
+          echo "$(System.DefaultWorkingDirectory)"
+          locate junitReport.xml
+          ls -lrthaR
+          #cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/junitReport.xml           
+          cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/junitReport.xml      
+    - task: PublishTestResults@2
+      displayName: 'Publish Postman Test Result'
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: 'junitReport.xml'
+        searchFolder: $(System.DefaultWorkingDirectory)/automatedtesting/postman/
+        testRunTitle: 'Postman Results'
+        
+    - task: CopyFilesOverSSH@0
+      displayName: 'Copy files to VM'
+      inputs:
+        sshEndpoint: quality_endpoint
+        contents: '*/*/*py*'
+        readyTimeout: '20000'
+        overwrite: true
+        flattenFolders: false
+        sourceFolder: ''
+
+# Deployment Stage
+- stage:
+  jobs:
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'DeploymentEnv'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: 'quality_conn'
+              appName: 'quality-app'
+              appType: webAppLinux
+              deploymentMethod: zipDeploy
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+
+  - deployment: VMDeploy
+    displayName: Configure VM
+    environment:
+      name:  ProductionEnv
+      resourceType: VirtualMachine
+      tags: myVM
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+               
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                pip3 install selenium
+                export PATH=$PATH:some/path
+                echo "Output of PATH"
+                echo $PATH
+                echo "Hello World this works"
+                sudo rm -rf chromedriver*
+                wget "https://chromedriver.storage.googleapis.com/83.0.4103.39/chromedriver_linux64.zip"
+          
+          - task: ExtractFiles@1
+            displayName: 'Extract files'
+            inputs:
+              archiveFilePatterns:  '*chromedriver_linux64.zip'
+              destinationFolder: ''
+              cleanDestinationFolder: false
+              
+          - task: Bash@3
+            displayName: 'Complete Setup of Chromedriver in VM'
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+    
+                pwd
+                sudo cp chromedriver /usr/bin
+                echo "Done Settingup"  
+
+        #Running Selenium Test
+          - task: Bash@3
+            displayName: 'Running Selenium Test'
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+                pwd
+                echo "Hello World this works"
+                cd /home/benoit/automatedtesting/selenium/
+                #wget https://chromedriver.storage.googleapis.com/81.0.4044.138/chromedriver_linux64.zip
+                #unzip chromedriver_linux64.zip
+                #cat /home/casita/automatedtesting/selenium/login.py
+                python3 /home/benoit/automatedtesting/selenium/login.py
+ 
+  # Running Jmeter Tests
+  - job: Jmeter
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+#    - task: JavaToolInstaller@0
+#      displayName: 'Install Java 8'
+#      inputs:
+#        versionSpec: '8'
+#        jdkArchitectureOption: 'x64'
+#        jdkSourceOption: 'PreInstalled'
+    - task: AlexandreGattiker.jmeter-tasks.custom-jmeter-installer-task.JMeterInstaller@0
+      displayName: 'Install JMeter 5.2.1'
+    - task: Bash@3
+      displayName: 'Run Jmeter test'
+      inputs:
+        targetType: 'inline'
+        script: |
+          locate jmeter
+          jmeter -n -t automatedtesting/jmeter/activities.jmx -Jresdir=automatedtesting/jmeter/pages.csv
